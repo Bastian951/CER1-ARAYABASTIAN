@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Verde</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="css/estilo-general.css">
+    
+    <link rel='icon' type="image/png" href="img/logo.png" sizes="32x32"> 
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar fixed-top">
+        <div class="container-fluid">
+            <a href="index.html" class="text-decoration-none">
+            <header class="text-center py-3 d-flex align-items-center justify-content-center custom-header">
+                <img src="img/logo.png" alt="Logo de Tienda Verde" style="height:35px; vertical-align:middle;">
+                <h2 class="m-1">TIENDA VERDE</h2>
+            </header>
+            </a>
+           
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <img src="img/pag_Inicio.png" alt="Inicio"> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="productos.html">
+                            <img src="img/productos.png" alt="Productos"> Productos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Formulario.html">
+                            <img src="img/solicitud.png" alt="Solicitud"> Solicitud
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container margen-superior">
+    </div>
+
+    <div class="container my-5" >
+        <h2 class="mb-4">Selecciona el Tipo y Subcategoría de Residuos</h2>
+
+        <!-- ComboBox para seleccionar el tipo de residuo -->
+        <div class="mb-3">
+            <label for="tipoResiduo" class="form-label">Tipo de Residuo</label>
+            <select id="tipoResiduo" class="form-select">
+                <option value="" selected disabled>Selecciona un tipo de residuo</option>
+                <option value="plastico">Plástico</option>
+                <option value="papel">Papel</option>
+                <option value="vidrio">Vidrio</option>
+                <option value="metales">Metales</option>
+                <option value="electronicos">Electrónicos</option>
+            </select>
+        </div>
+
+        <!-- ComboBox para seleccionar la subcategoría -->
+        <div class="mb-3">
+            <label for="subcategoriaResiduo" class="form-label">Subcategoría de Residuo</label>
+            <select id="subcategoriaResiduo" class="form-select">
+                <option value="" selected disabled>Selecciona una subcategoría</option>
+            </select>
+        </div>
+
+        <!-- Campos adicionales del formulario -->
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" id="nombre" class="form-control" placeholder="Introduce tu nombre" required>
+        </div>
+        <div class="mb-3">
+            <label for="correo" class="form-label">Correo Electrónico</label>
+            <input type="email" id="correo" class="form-control" placeholder="Introduce tu correo electrónico" required>
+            <div id="emailError" class="text-danger mt-2" style="display: none;">El correo electrónico ingresado no es válido.</div>
+        </div>
+        <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección</label>
+            <input type="text" id="direccion" class="form-control" placeholder="Introduce tu dirección" required>
+        </div>
+        <div class="mb-3">
+            <label for="comentarios" class="form-label">Comentarios Adicionales</label>
+            <textarea id="comentarios" class="form-control" rows="4" placeholder="Introduce tus comentarios adicionales"></textarea>
+        </div>
+        
+        <button type="submit" id="submitButton" class="btn btn-primary" disabled>Enviar</button>
+    
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; 2024 Tienda Verde. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script para manejar la lógica de subcategorías -->
+    <script>
+        document.getElementById('tipoResiduo').addEventListener('change', function() {
+            var tipoResiduo = this.value;
+            var subcategoriaResiduo = document.getElementById('subcategoriaResiduo');
+
+            // Al seleccionar un tipo Residuo debemos limpiar el combobox de subcategorías para volver a llenarlo
+            subcategoriaResiduo.innerHTML = '<option value="" selected disabled>Selecciona una subcategoría</option>';
+
+            // Seteamos las subcategorías según el tipo de residuo seleccionado
+            var subcategorias = {
+                plastico: ['Botellas', 'Envases', 'Bolsas'],
+                papel: ['Periódicos', 'Cartón', 'Papel de oficina'],
+                vidrio: ['Botellas', 'Frascos', 'Cristalería'],
+                metales: ['Latas', 'Cables', 'Electrodomésticos pequeños'],
+                electronicos: ['Teléfonos móviles', 'Baterías', 'Componentes de computadoras']
+            };
+
+            // Se añaden las opciones de subcategoría al segundo combobox
+            if(subcategorias[tipoResiduo]) {
+                subcategorias[tipoResiduo].forEach(function(subcategoria) {
+                    var option = document.createElement('option');
+                    option.value = subcategoria.toLowerCase().replace(/\s+/g, '');
+                    option.textContent = subcategoria;
+                    subcategoriaResiduo.appendChild(option);
+                });
+            }
+        });
+
+        //Validaciones
+        function validaciones() {
+            const res = document.getElementById('tipoResiduo').value.trim();
+            const subres = document.getElementById('subcategoriaResiduo').value.trim();
+            const nombre = document.getElementById('nombre').value.trim();
+            const correo = document.getElementById('correo').value.trim();
+            const direccion = document.getElementById('direccion').value.trim();
+            const emailError = document.getElementById('emailError');
+
+             // Validar correo 
+            const patronEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const validacionEmail = patronEmail.test(correo);
+
+            // Mostrar/ocultar mensaje de error
+            if (!validacionEmail && correo.length > 0) {
+                emailError.style.display = 'block';
+            } else {
+                emailError.style.display = 'none';
+            }
+
+            // Habilitamos el botón si todos los campos están llenos
+            document.getElementById('submitButton').disabled = !(nombre && correo && direccion && validacionEmail && res && subres);
+        }
+
+        function showAlert() {
+        alert('Solicitud ingresada con éxito.');
+        }
+
+        // definimos los listeners de los campos
+        document.getElementById('nombre').addEventListener('input', validaciones);
+        document.getElementById('correo').addEventListener('input', validaciones);
+        document.getElementById('direccion').addEventListener('input', validaciones);
+        document.getElementById('tipoResiduo').addEventListener('input', validaciones);
+        document.getElementById('subcategoriaResiduo').addEventListener('input', validaciones);
+
+        // Si se hizo click en el botón mostramos un mensaje en ventana emergente y reiniciamos el formulario
+        document.getElementById('submitButton').addEventListener('click', function() {
+        if (!document.getElementById('submitButton').disabled) {
+            showAlert();
+
+            // Limpiar el formulario
+            document.getElementById('nombre').value = '';
+            document.getElementById('correo').value = '';
+            document.getElementById('direccion').value = '';
+            document.getElementById('comentarios').value = '';
+            document.getElementById('emailError').style.display = 'none';
+            document.getElementById('tipoResiduo').value = '';
+            document.getElementById('subcategoriaResiduo').innerHTML = '<option value="" selected disabled>Selecciona una subcategoría</option>';
+
+            // Desactivar el botón de enviar
+            document.getElementById('submitButton').disabled = true;
+
+        }
+        });
+
+        // Validar el formulario al cargar
+        validaciones();
+    </script>
+</body>
+</html>
